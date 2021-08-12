@@ -10,7 +10,7 @@ export type User = typeof users[0]
 
 export type Methods = {
   get: {
-    resBody: User[]
+    resBody: { error: string; data: User[] }
   }
 
   post: {
@@ -19,7 +19,7 @@ export type Methods = {
 }
 
 export default mockMethods<Methods>({
-  get: () => ({ status: 200, resBody: users }),
+  get: () => ({ status: 200, resBody: { error: 'none', data: users } }),
 
   post: ({ reqBody }) => {
     users.push({
