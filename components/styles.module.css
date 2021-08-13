@@ -2,13 +2,9 @@
   position: relative;
 }
 
-.page {
-  position: relative;
-}
-
 .rooms {
-  width: 160px;
   height: 100vh;
+  width: 160px;
   border-color: rgb(150, 180, 190);
   border-width: 1px;
   border-right-style: solid;
@@ -16,8 +12,6 @@
 
 .room {
   font-size: 30px;
-  margin-left: 5px;
-  margin-right: 5px;
   border-color: rgb(150, 180, 190);
   border-width: 1px;
   border-bottom-style: solid;

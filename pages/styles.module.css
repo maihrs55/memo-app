@@ -1,3 +1,8 @@
 .sampleFont {
   color: #00f;
 }
+
+.roomswrapper {
+  position: relative;
+  width: 160px;
+}

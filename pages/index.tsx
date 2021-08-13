@@ -6,8 +6,11 @@ import {
 } from '@nuxtjs/composition-api'
 import type { Room } from '~/api/rooms'
 import { Rooms } from '~/components/Rooms'
-// import styles from './styles.module.css'
-import styles from '~/components/styles.module.css'
+import styles from './styles.module.css'
+
+export type OptionalQuery = {
+  roomId: number
+}
 
 export default defineComponent({
   setup() {
@@ -16,12 +19,11 @@ export default defineComponent({
 
     onMounted(async () => {
       rooms.value = await ctx.$api.rooms.$get()
-
       console.log(rooms.value)
     })
 
     return () => (
-      <div class={styles.page}>
+      <div class={styles.roomswrapper}>
         {rooms.value && <Rooms rooms={rooms.value} />}
       </div>
     )
