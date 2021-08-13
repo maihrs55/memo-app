@@ -1,8 +1,15 @@
 .sampleFont {
   color: #00f;
 }
+.container {
+  display: flex;
+  height: 100vh;
+}
 
-.roomswrapper {
-  position: relative;
+.sideberwrapper {
   width: 160px;
+}
+
+.boardwrapper {
+  flex: 1;
 }
