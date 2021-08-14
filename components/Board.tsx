@@ -15,10 +15,13 @@ export const Board = defineComponent({
       >,
       required: true,
     },
+    delete: {
+      type: Function as PropType<(cardId: Card['cardId']) => void>,
+      required: true,
+    },
   },
   setup(props) {
     const ctx = useContext()
-
     return () => (
       <div class={styles.boardContainer}>
         {props.cards.map((card) => (
@@ -26,6 +29,7 @@ export const Board = defineComponent({
             key={card.cardId}
             card={card}
             input={(text) => props.input(card.cardId, text)}
+            delete={() => props.delete(card.cardId)}
           />
         ))}
       </div>

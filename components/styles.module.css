@@ -36,6 +36,18 @@
   background-color: #eee8;
 }
 
+.deleteButtom {
+  position: absolute;
+  right: 1%;
+  top: 1%;
+  border-radius: 50%;
+  height: 22px;
+  font-size: 8px;
+  border: solid 1px #eee8;
+  background-color: transparent;
+  cursor: pointer;
+}
+
 .textArea {
   max-width: 240px;
   max-height: 288px;

@@ -24,7 +24,6 @@ export default defineComponent({
       const { roomId } = route.value.query
       return isNaN(+roomId) ? undefined : +roomId
     })
-    console.log('roomID =', roomId.value)
 
     onMounted(async () => {
       rooms.value = await ctx.$api.rooms.$get()
@@ -42,6 +41,16 @@ export default defineComponent({
       rooms.value = await ctx.$api.rooms.$get()
     }
 
+    const deleteCard = async (cardId: Card['cardId']) => {
+      const validateRoomId = roomId.value
+      if (validateRoomId === undefined) return
+      await ctx.$api.rooms
+        ._roomId(validateRoomId)
+        .cards._cardId(cardId)
+        .$delete()
+
+      rooms.value = await ctx.$api.rooms.$get()
+    }
     return () =>
       rooms.value ? (
         <div class={styles.container}>
@@ -53,6 +62,7 @@ export default defineComponent({
               <Board
                 cards={rooms.value[roomId.value].cards}
                 input={updateCardText}
+                delete={deleteCard}
               />
             )}
           </div>
