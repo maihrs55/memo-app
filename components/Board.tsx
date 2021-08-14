@@ -1,6 +1,7 @@
 import { defineComponent, PropType, useContext } from '@nuxtjs/composition-api'
 import type { Card } from '~/api/@types'
 import styles from '~/components/styles.module.css'
+import { StickyCard } from './StickyCard'
 
 export const Board = defineComponent({
   props: {
@@ -15,9 +16,7 @@ export const Board = defineComponent({
     return () => (
       <div class={styles.boardContainer}>
         {props.cards.map((card) => (
-          <div key={card.cardId} style={{ color: card.color }}>
-            {card.text}
-          </div>
+          <StickyCard key={card.cardId} card={card} />
         ))}
       </div>
     )

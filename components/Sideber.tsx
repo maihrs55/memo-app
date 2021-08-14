@@ -13,7 +13,7 @@ export const Sideber = defineComponent({
     const ctx = useContext()
 
     return () => (
-      <div class={styles.rooms}>
+      <div class={styles.sidebar}>
         {props.rooms.map((room) => (
           <nuxt-link
             key={room.roomId}
