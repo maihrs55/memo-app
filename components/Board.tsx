@@ -19,9 +19,14 @@ export const Board = defineComponent({
       type: Function as PropType<(cardId: Card['cardId']) => void>,
       required: true,
     },
+    add: {
+      type: Function as PropType<() => void>,
+      required: true,
+    },
   },
   setup(props) {
     const ctx = useContext()
+    const onClick = () => props.add()
     return () => (
       <div class={styles.boardContainer}>
         {props.cards.map((card) => (
@@ -32,6 +37,9 @@ export const Board = defineComponent({
             delete={() => props.delete(card.cardId)}
           />
         ))}
+        <button class={styles.addCardButton} onClick={onClick}>
+          +
+        </button>
       </div>
     )
   },

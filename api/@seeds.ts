@@ -41,3 +41,12 @@ export const rooms: Room[] = [
   },
   { roomId: 2, roomName: 'room3', color: '#0F5076', cards: [] },
 ]
+
+export const colors: string[] = [
+  '#768EB7',
+  '#65A6E8',
+  '#768EB7',
+  '#4182CE',
+  '#2565B7',
+  '#B59599',
+]
