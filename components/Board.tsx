@@ -1,4 +1,4 @@
-import { defineComponent, PropType, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
 import type { Card } from '~/api/@types'
 import styles from '~/components/styles.module.css'
 import { StickyCard } from './StickyCard'
@@ -23,9 +23,14 @@ export const Board = defineComponent({
       type: Function as PropType<() => void>,
       required: true,
     },
+    position: {
+      type: Function as PropType<
+        (cardId: Card['cardId'], position: { x: number; y: number }) => void
+      >,
+      required: true,
+    },
   },
   setup(props) {
-    const ctx = useContext()
     const onClick = () => props.add()
     return () => (
       <div class={styles.boardContainer}>
@@ -35,6 +40,7 @@ export const Board = defineComponent({
             card={card}
             input={(text) => props.input(card.cardId, text)}
             delete={() => props.delete(card.cardId)}
+            position={(position) => props.position(card.cardId, position)}
           />
         ))}
         <button class={styles.addCardButton} onClick={onClick}>

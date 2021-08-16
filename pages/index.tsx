@@ -41,6 +41,21 @@ export default defineComponent({
       rooms.value = await ctx.$api.rooms.$get()
     }
 
+    const updatePosition = async (
+      cardId: Card['cardId'],
+      position: { x: number; y: number }
+    ) => {
+      const validateRoomId = roomId.value
+      if (validateRoomId === undefined) return
+
+      await ctx.$api.rooms
+        ._roomId(validateRoomId)
+        .cards._cardId(cardId)
+        .$patch({ body: { position } })
+
+      rooms.value = await ctx.$api.rooms.$get()
+    }
+
     const deleteCard = async (cardId: Card['cardId']) => {
       const validateRoomId = roomId.value
       if (validateRoomId === undefined) return
@@ -58,7 +73,6 @@ export default defineComponent({
       await ctx.$api.rooms._roomId(validateRoomId).cards.$post()
 
       rooms.value = await ctx.$api.rooms.$get()
-      console.log(rooms.value)
     }
 
     return () =>
@@ -74,6 +88,7 @@ export default defineComponent({
                 input={updateCardText}
                 delete={deleteCard}
                 add={addCard}
+                position={updatePosition}
               />
             )}
           </div>

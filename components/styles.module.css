@@ -37,17 +37,6 @@
   cursor: pointer;
 }
 
-.cardContainer {
-  position: absolute;
-  width: 240px;
-  height: 320px;
-}
-
-.stickyArea {
-  height: 32px;
-  background-color: #eee8;
-}
-
 .deleteButtom {
   position: absolute;
   right: 1%;
@@ -60,11 +49,24 @@
   cursor: pointer;
 }
 
+.stickyArea {
+  position: relative;
+  height: 32px;
+  background-color: #eee8;
+}
+
 .textArea {
-  max-width: 240px;
-  max-height: 288px;
-  width: 240px;
-  height: 288px;
+  flex: 1;
+  z-index: 200;
   filter: invert(100%) grayscale(100%);
   background-color: transparent;
+}
+
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 100;
+  width: 240px;
+  height: 320px;
 }
