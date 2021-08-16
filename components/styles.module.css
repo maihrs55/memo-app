@@ -25,6 +25,11 @@
   background-color: #2f6665;
 }
 
+.cardMoveArea {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
 .addCardButton {
   position: absolute;
   right: 5%;

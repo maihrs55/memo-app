@@ -32,16 +32,24 @@ export const Board = defineComponent({
   },
   setup(props) {
     const onClick = () => props.add()
+    const onMousedown = (target: MouseEvent) => {
+      console.log(target.currentTarget)
+    }
     return () => (
       <div class={styles.boardContainer}>
         {props.cards.map((card) => (
-          <StickyCard
+          <div
             key={card.cardId}
-            card={card}
-            input={(text) => props.input(card.cardId, text)}
-            delete={() => props.delete(card.cardId)}
-            position={(position) => props.position(card.cardId, position)}
-          />
+            class={styles.cardMoveArea}
+            onMousedown={onMousedown}
+          >
+            <StickyCard
+              card={card}
+              input={(text) => props.input(card.cardId, text)}
+              delete={() => props.delete(card.cardId)}
+              position={(position) => props.position(card.cardId, position)}
+            />
+          </div>
         ))}
         <button class={styles.addCardButton} onClick={onClick}>
           +
