@@ -25,11 +25,6 @@
   background-color: #2f6665;
 }
 
-.cardMoveArea {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-}
 .addCardButton {
   position: absolute;
   right: 5%;
@@ -60,6 +55,12 @@
   background-color: #eee8;
 }
 
+.movingStickyArea {
+  position: fixed;
+  height: 32px;
+  background-color: #eee8;
+}
+
 .textArea {
   flex: 1;
   z-index: 200;
@@ -74,4 +75,17 @@
   z-index: 100;
   width: 240px;
   height: 320px;
+}
+
+.cardMoveArea {
+  position: absolute;
+  z-index: 2147483647;
+  height: 100%;
+  width: 100%;
+}
+.cardFixedArea {
+  position: absolute;
+  z-index: auto;
+  height: 100%;
+  width: 100%;
 }

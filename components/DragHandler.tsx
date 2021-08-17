@@ -34,11 +34,11 @@ export const DragHandler = defineComponent({
 
     return () => (
       <div
-        class={styles.stickyArea}
+        class={isDrag ? styles.stickyArea : styles.movingStickyArea}
         onMousemove={onMousemove}
         onMouseup={onMouseup}
         onMousedown={onMousedown}
-      />
+      ></div>
     )
   },
 })

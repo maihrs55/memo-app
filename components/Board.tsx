@@ -1,4 +1,4 @@
-import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import { defineComponent, PropType, ref } from '@nuxtjs/composition-api'
 import type { Card } from '~/api/@types'
 import styles from '~/components/styles.module.css'
 import { StickyCard } from './StickyCard'
@@ -32,16 +32,21 @@ export const Board = defineComponent({
   },
   setup(props) {
     const onClick = () => props.add()
-    const onMousedown = (target: MouseEvent) => {
-      console.log(target.currentTarget)
+    const isClick = ref(false)
+    const onMousedown = () => {
+      isClick.value = true
+    }
+    const onMouseup = () => {
+      isClick.value = false
     }
     return () => (
       <div class={styles.boardContainer}>
         {props.cards.map((card) => (
           <div
             key={card.cardId}
-            class={styles.cardMoveArea}
-            onMousedown={onMousedown}
+            class={isClick.value ? styles.cardMoveArea : styles.cardFixedArea}
+            onMousemove={onMousedown}
+            onMouseup={onMouseup}
           >
             <StickyCard
               card={card}
