@@ -25,6 +25,7 @@ export default mockMethods<Methods>({
         x: 0,
         y: 0,
       },
+      zIndex: 0,
     }
 
     const room = rooms.find((r) => r.roomId === roomId)
@@ -33,6 +34,8 @@ export default mockMethods<Methods>({
       return {
         status: 400,
       }
+
+    card.zIndex = room.cards.length + 1
 
     room?.cards.push(card)
     return { status: 200, resBody: card }
