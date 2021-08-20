@@ -29,30 +29,57 @@ export const Board = defineComponent({
       >,
       required: true,
     },
+    zIndex: {
+      type: Function as PropType<
+        (cardId: Card['cardId'], zIndex: number) => void
+      >,
+      required: true,
+    },
   },
   setup(props) {
     const onClick = () => props.add()
-    const isClick = ref(false)
-    const onMousedown = () => {
-      isClick.value = true
+    const isMoving = ref(false)
+    const maxzIndex = ref(Math.max(...props.cards.map((item) => item.zIndex)))
+    const cardStyle = ref({
+      height: '0%',
+      width: '0%',
+      zIndex: 0,
+    })
+    const onMousedown = (cardId: number) => {
+      isMoving.value = true
+      // const c = props.cards.find((e)=>e.cardId===cardId)?.zIndex
+      cardStyle.value = {
+        height: '100%',
+        width: '100%',
+        zIndex: maxzIndex.value + 1,
+      }
     }
-    const onMouseup = () => {
-      isClick.value = false
+    const onMouseup = (cardId: number) => {
+      isMoving.value = false
+      cardStyle.value = {
+        height: '0%',
+        width: '0%',
+        zIndex: cardId,
+      }
     }
+
     return () => (
       <div class={styles.boardContainer}>
         {props.cards.map((card) => (
           <div
             key={card.cardId}
-            class={isClick.value ? styles.cardMoveArea : styles.cardFixedArea}
-            onMousemove={onMousedown}
-            onMouseup={onMouseup}
+            class={styles.cardMoveArea}
+            id={'card' + card.cardId + ''}
+            onMousedown={() => onMousedown(card.cardId)}
+            onMouseup={() => onMouseup(card.cardId)}
+            style={cardStyle.value}
           >
             <StickyCard
               card={card}
               input={(text) => props.input(card.cardId, text)}
               delete={() => props.delete(card.cardId)}
               position={(position) => props.position(card.cardId, position)}
+              zIndex={(zIndex) => props.zIndex(card.cardId, zIndex)}
             />
           </div>
         ))}
