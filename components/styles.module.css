@@ -35,6 +35,7 @@
   border: none;
   width: 48px;
   cursor: pointer;
+  z-index: 2147483647;
 }
 
 .deleteButtom {
@@ -79,13 +80,4 @@
 
 .cardMoveArea {
   position: absolute;
-  z-index: 2147483647;
-  height: 100%;
-  width: 100%;
-}
-.cardFixedArea {
-  position: absolute;
-  z-index: auto;
-  height: 100%;
-  width: 100%;
 }
