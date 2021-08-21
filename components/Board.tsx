@@ -38,41 +38,60 @@ export const Board = defineComponent({
   },
   setup(props) {
     const onClick = () => props.add()
-    const isMoving = ref(false)
-    const maxzIndex = ref(Math.max(...props.cards.map((item) => item.zIndex)))
     const cardStyle = ref({
-      height: '0%',
-      width: '0%',
-      zIndex: 0,
+      id: 0,
+      style: { height: '0%', width: '0%', zIndex: 0 },
     })
-    const onMousedown = (cardId: number) => {
-      isMoving.value = true
-      // const c = props.cards.find((e)=>e.cardId===cardId)?.zIndex
-      cardStyle.value = {
-        height: '100%',
-        width: '100%',
-        zIndex: maxzIndex.value + 1,
-      }
+    const procCardAtyles = (cardid: number, zIndex: number) => {
+      return (cardStyle.value = {
+        ...cardStyle.value,
+        id: cardid,
+        style: { height: '0%', width: '0%', zIndex: zIndex },
+      })
     }
-    const onMouseup = (cardId: number) => {
-      isMoving.value = false
-      cardStyle.value = {
-        height: '0%',
-        width: '0%',
-        zIndex: cardId,
-      }
+    const localcardStyles = ref(
+      props.cards.map((c) => procCardAtyles(c.cardId, c.zIndex))
+    )
+
+    const maxzIndex = ref(Math.max(...props.cards.map((c) => c.zIndex)) + 1)
+    const onMousedown = (cardId: number) => {
+      if (!localcardStyles.value) return
+
+      localcardStyles.value = localcardStyles.value.map((s) =>
+        s.id === cardId
+          ? {
+              ...localcardStyles.value,
+              id: s.id,
+              style: { height: '100%', width: '100%', zIndex: maxzIndex.value },
+            }
+          : {
+              ...localcardStyles.value,
+              id: s.id,
+              style: { height: '0%', width: '0%', zIndex: s.style.zIndex },
+            }
+      )
+    }
+    const onMouseup = () => {
+      localcardStyles.value = localcardStyles.value.map((s) => ({
+        ...localcardStyles.value,
+        id: s.id,
+        style: { height: '0%', width: '0%', zIndex: s.style.zIndex },
+      }))
     }
 
+    const getStyles = (cardId: number) => {
+      return localcardStyles.value.find((s) => s.id === cardId)?.style
+    }
     return () => (
       <div class={styles.boardContainer}>
         {props.cards.map((card) => (
           <div
             key={card.cardId}
             class={styles.cardMoveArea}
-            id={'card' + card.cardId + ''}
+            id={'card' + `${card.cardId}`}
+            style={getStyles(card.cardId)}
             onMousedown={() => onMousedown(card.cardId)}
-            onMouseup={() => onMouseup(card.cardId)}
-            style={cardStyle.value}
+            onMouseup={onMouseup}
           >
             <StickyCard
               card={card}
