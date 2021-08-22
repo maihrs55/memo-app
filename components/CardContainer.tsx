@@ -6,7 +6,6 @@ import {
 } from '@nuxtjs/composition-api'
 import type { Card } from '~/api/@types'
 import styles from '~/components/styles.module.css'
-import { StickyCard } from './StickyCard'
 
 export const CardContainer = defineComponent({
   props: {
@@ -80,14 +79,7 @@ export const CardContainer = defineComponent({
         style={displayCardStyles.value}
         onMousedown={() => onMousedown(props.card.cardId, props.card.zIndex)}
         onMouseup={() => onMouseup(props.card.cardId)}
-      >
-        <StickyCard
-          card={props.card}
-          input={(text) => props.input(text)}
-          delete={() => props.delete()}
-          position={(position) => props.position(position)}
-        />
-      </div>
+      ></div>
     )
   },
 })

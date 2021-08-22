@@ -16,19 +16,15 @@ export const DragHandler = defineComponent({
   setup(props) {
     const isDrag = ref(false)
     const cursor: { x: number; y: number } = { x: 0, y: 0 }
-    const onMousedown = (target: MouseEvent) => {
-      cursor.x = target.offsetX
-      cursor.y = target.offsetY
+    const onMousedown = (_target: MouseEvent) => {
       isDrag.value = true
     }
-    const onMouseup = () => {
+    const onMouseup = (target: MouseEvent) => {
       isDrag.value = false
     }
-
     const onMousemove = (target: MouseEvent) => {
-      if (!isDrag.value) return
-      const px = isDrag.value ? +target.offsetX - cursor.x : 0
-      const py = isDrag.value ? +target.offsetY - cursor.y : 0
+      const px = target.clientX - 240
+      const py = target.clientY - 32 / 2
       props.position({ x: px, y: py })
     }
 
@@ -38,7 +34,9 @@ export const DragHandler = defineComponent({
         onMousemove={onMousemove}
         onMouseup={onMouseup}
         onMousedown={onMousedown}
-      ></div>
+      >
+        <div class={isDrag.value && styles.cardMoveArea} />
+      </div>
     )
   },
 })

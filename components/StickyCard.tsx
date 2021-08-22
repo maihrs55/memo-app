@@ -47,13 +47,12 @@ export const StickyCard = defineComponent({
         ? props.card.position
         : localPosition.value
     )
+    onmousedown = () => {
+      isMoving.value = true
+    }
     const onMousemove = (position: { x: number; y: number }) => {
-      const movex = localPosition.value.x + position.x
-      const movey = localPosition.value.y + position.y
-
-      isMoving.value = movex > 0 ? true : false
       localPosition.value = isMoving.value
-        ? { x: movex, y: movey }
+        ? { x: position.x, y: position.y }
         : localPosition.value
 
       props.position({ x: localPosition.value.x, y: localPosition.value.y })
@@ -74,6 +73,7 @@ export const StickyCard = defineComponent({
             position={(p) => {
               onMousemove(p)
             }}
+            isMoving={onmousedown}
           />
         }
         <button class={styles.deleteButtom} type="button" onClick={onClick}>

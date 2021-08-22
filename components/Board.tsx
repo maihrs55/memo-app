@@ -1,7 +1,7 @@
-import { computed, defineComponent, PropType } from '@nuxtjs/composition-api'
+import { defineComponent, PropType, ref } from '@nuxtjs/composition-api'
 import type { Card } from '~/api/@types'
 import styles from '~/components/styles.module.css'
-import { CardContainer } from './CardContainer'
+import { StickyCard } from './StickyCard'
 
 export const Board = defineComponent({
   props: {
@@ -37,20 +37,21 @@ export const Board = defineComponent({
     },
   },
   setup(props) {
-    const maxzIndex = computed(() =>
-      Math.max(...props.cards.map((c) => c.zIndex))
-    )
     const onClick = () => props.add()
+    const localCards = ref(props.cards)
+    const addTargetCardTail = (cardId: number) => {
+      localCards.value = {
+        ...localCards.value.filter((c) => c.cardId === cardId),
+      }
+    }
     return () => (
       <div class={styles.boardContainer}>
-        {props.cards.map((card, i) => (
-          <CardContainer
+        {props.cards.map((card) => (
+          <StickyCard
             card={card}
             input={(text) => props.input(card.cardId, text)}
             delete={() => props.delete(card.cardId)}
             position={(position) => props.position(card.cardId, position)}
-            zIndex={(cardId, zIndex) => props.zIndex(cardId, zIndex)}
-            maxzIndex={maxzIndex.value}
           />
         ))}
         <button class={styles.addCardButton} onClick={onClick}>
