@@ -23,6 +23,10 @@ export const StickyCard = defineComponent({
       type: Function as PropType<(position: { x: number; y: number }) => void>,
       required: true,
     },
+    updateOrder: {
+      type: Function as PropType<(cardId: Card['cardId']) => void>,
+      required: true,
+    },
   },
   setup(props) {
     const isForcusing = ref(false)
@@ -50,6 +54,9 @@ export const StickyCard = defineComponent({
     onmousedown = () => {
       isMoving.value = true
     }
+    onmouseup = () => {
+      isMoving.value = false
+    }
     const onMousemove = (position: { x: number; y: number }) => {
       localPosition.value = isMoving.value
         ? { x: position.x, y: position.y }
@@ -73,7 +80,8 @@ export const StickyCard = defineComponent({
             position={(p) => {
               onMousemove(p)
             }}
-            isMoving={onmousedown}
+            onmousedown={onmousedown}
+            onmouseup={onmouseup}
           />
         }
         <button class={styles.deleteButtom} type="button" onClick={onClick}>

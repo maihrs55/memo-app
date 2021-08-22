@@ -5,6 +5,7 @@ export const rooms: Room[] = [
     roomId: 0,
     roomName: 'room1',
     color: '#768EB7',
+    order: [0, 1, 2],
     cards: [
       {
         cardId: 0,
@@ -33,6 +34,7 @@ export const rooms: Room[] = [
     roomId: 1,
     roomName: 'room2',
     color: '#B59599',
+    order: [0],
     cards: [
       {
         cardId: 0,
@@ -43,7 +45,7 @@ export const rooms: Room[] = [
       },
     ],
   },
-  { roomId: 2, roomName: 'room3', color: '#0F5076', cards: [] },
+  { roomId: 2, roomName: 'room3', color: '#0F5076', order: [], cards: [] },
 ]
 
 export const colors: string[] = [

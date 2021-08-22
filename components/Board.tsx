@@ -29,20 +29,21 @@ export const Board = defineComponent({
       >,
       required: true,
     },
-    zIndex: {
-      type: Function as PropType<
-        (cardId: Card['cardId'], zIndex: number) => void
-      >,
+    updateOrder: {
+      type: Function as PropType<(order: number[]) => void>,
       required: true,
     },
   },
   setup(props) {
     const onClick = () => props.add()
     const localCards = ref(props.cards)
+    const order = ref([0, 1, 2])
     const addTargetCardTail = (cardId: number) => {
       localCards.value = {
         ...localCards.value.filter((c) => c.cardId === cardId),
       }
+      order.value = [...localCards.value.map((c) => c.cardId)]
+      props.updateOrder(order.value)
     }
     return () => (
       <div class={styles.boardContainer}>
@@ -52,6 +53,7 @@ export const Board = defineComponent({
             input={(text) => props.input(card.cardId, text)}
             delete={() => props.delete(card.cardId)}
             position={(position) => props.position(card.cardId, position)}
+            updateOrder={(cardId) => addTargetCardTail(cardId)}
           />
         ))}
         <button class={styles.addCardButton} onClick={onClick}>

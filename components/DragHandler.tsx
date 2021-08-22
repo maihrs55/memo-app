@@ -15,17 +15,26 @@ export const DragHandler = defineComponent({
   },
   setup(props) {
     const isDrag = ref(false)
-    const cursor: { x: number; y: number } = { x: 0, y: 0 }
-    const onMousedown = (_target: MouseEvent) => {
+    const position = ref({ x: 0, y: 0 })
+    const onMousedown = (target: MouseEvent) => {
+      position.value = {
+        ...position.value,
+        x: target.clientX - 240,
+        y: target.clientY - 32 / 2,
+      }
+      props.position(position.value)
       isDrag.value = true
     }
     const onMouseup = (target: MouseEvent) => {
       isDrag.value = false
     }
     const onMousemove = (target: MouseEvent) => {
-      const px = target.clientX - 240
-      const py = target.clientY - 32 / 2
-      props.position({ x: px, y: py })
+      position.value = {
+        ...position.value,
+        x: target.clientX - 240,
+        y: target.clientY - 32 / 2,
+      }
+      props.position(position.value)
     }
 
     return () => (
