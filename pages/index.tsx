@@ -73,6 +73,7 @@ export default defineComponent({
       await ctx.$api.rooms._roomId(validateRoomId).cards.$post()
 
       rooms.value = await ctx.$api.rooms.$get()
+      console.log(rooms.value)
     }
 
     const updateZindex = async (cardId: Card['cardId'], zIndex: number) => {
@@ -85,6 +86,7 @@ export default defineComponent({
         .$patch({ body: { zIndex } })
 
       rooms.value = await ctx.$api.rooms.$get()
+      console.log(rooms.value)
     }
 
     return () =>
