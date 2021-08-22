@@ -35,7 +35,8 @@ export default mockMethods<Methods>({
         status: 400,
       }
 
-    card.zIndex = room.cards.length + 1
+    const zIndexs = room.cards.map((c) => c.zIndex)
+    card.zIndex = Math.max(...zIndexs)
 
     room?.cards.push(card)
     return { status: 200, resBody: card }
