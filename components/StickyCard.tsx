@@ -23,14 +23,6 @@ export const StickyCard = defineComponent({
       type: Function as PropType<(position: { x: number; y: number }) => void>,
       required: true,
     },
-    clickCardId: {
-      type: Function as PropType<(cardId: Card['cardId']) => void>,
-      required: true,
-    },
-    getzIndex: {
-      type: Function as PropType<(zIndex: Card['zIndex']) => void>,
-      required: true,
-    },
   },
   setup(props) {
     const isForcusing = ref(false)
@@ -63,10 +55,6 @@ export const StickyCard = defineComponent({
         : localPosition.value
       props.position({ x: localPosition.value.x, y: localPosition.value.y })
     }
-    const maxzIndex = computed(() => props.getzIndex)
-    const clickCardid = (cardId: number) => {
-      props.clickCardId(cardId)
-    }
     return () => (
       <div
         class={styles.cardContainer}
@@ -76,15 +64,12 @@ export const StickyCard = defineComponent({
           backgroundColor: props.card.color,
         }}
       >
-        <div onMousedown={() => clickCardid(props.card.cardId)}>
-          <DragHandler
-            card={props.card}
-            position={(position, isDrag) => {
-              setPosition(position, isDrag)
-            }}
-            maxzIndex={maxzIndex.value}
-          />
-        </div>
+        <DragHandler
+          card={props.card}
+          position={(position, isDrag) => {
+            setPosition(position, isDrag)
+          }}
+        />
         <button class={styles.deleteButtom} type="button" onClick={onClick}>
           ×
         </button>

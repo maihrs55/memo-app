@@ -1,9 +1,4 @@
-import {
-  computed,
-  defineComponent,
-  PropType,
-  ref,
-} from '@nuxtjs/composition-api'
+import { defineComponent, PropType, ref } from '@nuxtjs/composition-api'
 import { Card } from '~/api/@types'
 import styles from '~/components/styles.module.css'
 
@@ -17,10 +12,6 @@ export const DragHandler = defineComponent({
       type: Function as PropType<
         (position: { x: number; y: number }, isDrag: Boolean) => void
       >,
-      required: true,
-    },
-    maxzIndex: {
-      type: Function as PropType<(zIndex: Card['zIndex']) => void>,
       required: true,
     },
   },
@@ -47,16 +38,6 @@ export const DragHandler = defineComponent({
       }
       props.position(position.value, isDrag.value)
     }
-    const localcardStyles = ref({
-      zIndex: props.card.zIndex,
-    })
-    const displayCardStyles = computed(
-      () =>
-        (localcardStyles.value.zIndex = isDrag.value
-          ? props.card.zIndex
-          : +props.maxzIndex)
-    )
-
     return () => (
       <div
         class={styles.stickyArea}
@@ -64,10 +45,7 @@ export const DragHandler = defineComponent({
         onMouseup={onMouseup}
         onMousedown={onMousedown}
       >
-        <div
-          class={isDrag.value && styles.cardMoveArea}
-          style={{ zIndex: +`${displayCardStyles.value}` }}
-        />
+        <div class={isDrag.value && styles.cardMoveArea} />
       </div>
     )
   },

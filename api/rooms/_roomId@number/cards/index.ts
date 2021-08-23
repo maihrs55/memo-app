@@ -16,7 +16,6 @@ export default mockMethods<Methods>({
 
     const rcardId = +`${Math.random()}`.slice(2)
     const rcolor = colors[Math.floor(Math.random() * colors.length)]
-
     const card: Card = {
       cardId: rcardId,
       text: '',
@@ -27,17 +26,13 @@ export default mockMethods<Methods>({
       },
       zIndex: 0,
     }
-
     const room = rooms.find((r) => r.roomId === roomId)
-
     if (!room || !card)
       return {
         status: 400,
       }
-
     const zIndexs = room.cards.map((c) => c.zIndex)
     card.zIndex = Math.max(...zIndexs)
-
     room?.cards.push(card)
     return { status: 200, resBody: card }
   },
