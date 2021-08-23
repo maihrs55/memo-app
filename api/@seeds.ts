@@ -28,6 +28,7 @@ export const rooms: Room[] = [
         zIndex: 3,
       },
     ],
+    order: [0, 1, 2],
   },
   {
     roomId: 1,
@@ -42,8 +43,9 @@ export const rooms: Room[] = [
         zIndex: 1,
       },
     ],
+    order: [0],
   },
-  { roomId: 2, roomName: 'room3', color: '#0F5076', cards: [] },
+  { roomId: 2, roomName: 'room3', color: '#0F5076', cards: [], order: [] },
 ]
 
 export const colors: string[] = [

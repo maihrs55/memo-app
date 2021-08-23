@@ -9,36 +9,44 @@ export const DragHandler = defineComponent({
       required: true,
     },
     position: {
-      type: Function as PropType<(position: { x: number; y: number }) => void>,
+      type: Function as PropType<
+        (position: { x: number; y: number }, isDrag: Boolean) => void
+      >,
       required: true,
     },
   },
   setup(props) {
     const isDrag = ref(false)
-    const cursor: { x: number; y: number } = { x: 0, y: 0 }
+    const position = ref({ x: 0, y: 0 })
     const onMousedown = (target: MouseEvent) => {
-      cursor.x = target.offsetX
-      cursor.y = target.offsetY
+      position.value = {
+        ...position.value,
+        x: target.clientX - 240,
+        y: target.clientY - 32 / 2,
+      }
+      props.position(position.value, isDrag.value)
       isDrag.value = true
     }
-    const onMouseup = () => {
+    const onMouseup = (_target: MouseEvent) => {
       isDrag.value = false
     }
-
     const onMousemove = (target: MouseEvent) => {
-      if (!isDrag.value) return
-      const px = isDrag.value ? +target.offsetX - cursor.x : 0
-      const py = isDrag.value ? +target.offsetY - cursor.y : 0
-      props.position({ x: px, y: py })
+      position.value = {
+        ...position.value,
+        x: target.clientX - 240,
+        y: target.clientY - 32 / 2,
+      }
+      props.position(position.value, isDrag.value)
     }
-
     return () => (
       <div
-        class={isDrag ? styles.stickyArea : styles.movingStickyArea}
+        class={styles.stickyArea}
         onMousemove={onMousemove}
         onMouseup={onMouseup}
         onMousedown={onMousedown}
-      ></div>
+      >
+        <div class={isDrag.value && styles.cardMoveArea} />
+      </div>
     )
   },
 })

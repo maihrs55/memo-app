@@ -1,7 +1,7 @@
-import { computed, defineComponent, PropType } from '@nuxtjs/composition-api'
+import { defineComponent, PropType, ref, watch } from '@nuxtjs/composition-api'
 import type { Card } from '~/api/@types'
 import styles from '~/components/styles.module.css'
-import { CardContainer } from './CardContainer'
+import { StickyCard } from './StickyCard'
 
 export const Board = defineComponent({
   props: {
@@ -29,29 +29,35 @@ export const Board = defineComponent({
       >,
       required: true,
     },
-    zIndex: {
-      type: Function as PropType<
-        (cardId: Card['cardId'], zIndex: number) => void
-      >,
+    updateOrder: {
+      type: Function as PropType<(cardIds: number[]) => void>,
       required: true,
     },
   },
   setup(props) {
-    const maxzIndex = computed(() =>
-      Math.max(...props.cards.map((c) => c.zIndex))
-    )
     const onClick = () => props.add()
+    const cardIds = ref(props.cards.map((c) => c.cardId))
+    watch(
+      () => props.cards,
+      () => (cardIds.value = props.cards.map((c) => c.cardId))
+    )
+    const addCardIdToTail = (id: number) => {
+      cardIds.value = [...cardIds.value.filter((c) => c != id), id]
+      props.updateOrder(cardIds.value)
+    }
+    const getCardById = (cardId: number) =>
+      props.cards.filter((c) => c.cardId === cardId)[0]
     return () => (
       <div class={styles.boardContainer}>
-        {props.cards.map((card, i) => (
-          <CardContainer
-            card={card}
-            input={(text) => props.input(card.cardId, text)}
-            delete={() => props.delete(card.cardId)}
-            position={(position) => props.position(card.cardId, position)}
-            zIndex={(cardId, zIndex) => props.zIndex(cardId, zIndex)}
-            maxzIndex={maxzIndex.value}
-          />
+        {cardIds.value.map((cardId) => (
+          <div onMousedown={() => addCardIdToTail(cardId)}>
+            <StickyCard
+              card={getCardById(cardId)}
+              input={(text) => props.input(cardId, text)}
+              delete={() => props.delete(cardId)}
+              position={(position) => props.position(cardId, position)}
+            />
+          </div>
         ))}
         <button class={styles.addCardButton} onClick={onClick}>
           +

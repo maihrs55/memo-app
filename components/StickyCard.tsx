@@ -40,25 +40,21 @@ export const StickyCard = defineComponent({
     const onBlur = () => (isForcusing.value = false)
     const onClick = () => props.delete()
 
-    const isMoving = ref(false)
     const localPosition = ref(props.card.position)
     const containerPosition = computed(() =>
       localPosition.value === props.card.position
         ? props.card.position
         : localPosition.value
     )
-    const onMousemove = (position: { x: number; y: number }) => {
-      const movex = localPosition.value.x + position.x
-      const movey = localPosition.value.y + position.y
-
-      isMoving.value = movex > 0 ? true : false
-      localPosition.value = isMoving.value
-        ? { x: movex, y: movey }
+    const setPosition = (
+      position: { x: number; y: number },
+      isDrag: Boolean
+    ) => {
+      localPosition.value = isDrag
+        ? { x: position.x, y: position.y }
         : localPosition.value
-
       props.position({ x: localPosition.value.x, y: localPosition.value.y })
     }
-
     return () => (
       <div
         class={styles.cardContainer}
@@ -68,14 +64,12 @@ export const StickyCard = defineComponent({
           backgroundColor: props.card.color,
         }}
       >
-        {
-          <DragHandler
-            card={props.card}
-            position={(p) => {
-              onMousemove(p)
-            }}
-          />
-        }
+        <DragHandler
+          card={props.card}
+          position={(position, isDrag) => {
+            setPosition(position, isDrag)
+          }}
+        />
         <button class={styles.deleteButtom} type="button" onClick={onClick}>
           ×
         </button>
