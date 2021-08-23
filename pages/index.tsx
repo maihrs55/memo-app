@@ -75,7 +75,7 @@ export default defineComponent({
       rooms.value = await ctx.$api.rooms.$get()
     }
 
-    const updateCardArray = async (order: number[]) => {
+    const updateOrder = async (order: number[]) => {
       const validateRoomId = roomId.value
       if (validateRoomId === undefined) return
 
@@ -85,6 +85,20 @@ export default defineComponent({
 
       rooms.value = await ctx.$api.rooms.$get()
       console.log('order : ' + order)
+    }
+    const updatezIndex = async (
+      cardId: Card['cardId'],
+      zIndex: Card['zIndex']
+    ) => {
+      const validateRoomId = roomId.value
+      if (validateRoomId === undefined) return
+
+      await ctx.$api.rooms
+        ._roomId(validateRoomId)
+        .cards._cardId(cardId)
+        .$patch({ body: { zIndex } })
+
+      rooms.value = await ctx.$api.rooms.$get()
     }
 
     return () =>
@@ -101,7 +115,8 @@ export default defineComponent({
                 delete={deleteCard}
                 add={addCard}
                 position={updatePosition}
-                updateOrder={updateCardArray}
+                updateOrder={updateOrder}
+                updatezIndex={updatezIndex}
               />
             )}
           </div>

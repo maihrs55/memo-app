@@ -23,8 +23,12 @@ export const StickyCard = defineComponent({
       type: Function as PropType<(position: { x: number; y: number }) => void>,
       required: true,
     },
-    updateOrder: {
+    clickCardId: {
       type: Function as PropType<(cardId: Card['cardId']) => void>,
+      required: true,
+    },
+    getzIndex: {
+      type: Function as PropType<(zIndex: Card['zIndex']) => void>,
       required: true,
     },
   },
@@ -44,27 +48,25 @@ export const StickyCard = defineComponent({
     const onBlur = () => (isForcusing.value = false)
     const onClick = () => props.delete()
 
-    const isMoving = ref(false)
     const localPosition = ref(props.card.position)
     const containerPosition = computed(() =>
       localPosition.value === props.card.position
         ? props.card.position
         : localPosition.value
     )
-    onmousedown = () => {
-      isMoving.value = true
-    }
-    onmouseup = () => {
-      isMoving.value = false
-    }
-    const onMousemove = (position: { x: number; y: number }) => {
-      localPosition.value = isMoving.value
+    const setPosition = (
+      position: { x: number; y: number },
+      isDrag: Boolean
+    ) => {
+      localPosition.value = isDrag
         ? { x: position.x, y: position.y }
         : localPosition.value
-
       props.position({ x: localPosition.value.x, y: localPosition.value.y })
     }
-
+    const maxzIndex = computed(() => props.getzIndex)
+    const clickCardid = (cardId: number) => {
+      props.clickCardId(cardId)
+    }
     return () => (
       <div
         class={styles.cardContainer}
@@ -74,16 +76,15 @@ export const StickyCard = defineComponent({
           backgroundColor: props.card.color,
         }}
       >
-        {
+        <div onMousedown={() => clickCardid(props.card.cardId)}>
           <DragHandler
             card={props.card}
-            position={(p) => {
-              onMousemove(p)
+            position={(position, isDrag) => {
+              setPosition(position, isDrag)
             }}
-            onmousedown={onmousedown}
-            onmouseup={onmouseup}
+            maxzIndex={maxzIndex.value}
           />
-        }
+        </div>
         <button class={styles.deleteButtom} type="button" onClick={onClick}>
           ×
         </button>

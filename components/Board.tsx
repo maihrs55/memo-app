@@ -1,4 +1,10 @@
-import { defineComponent, PropType, ref } from '@nuxtjs/composition-api'
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+  watch,
+} from '@nuxtjs/composition-api'
 import type { Card } from '~/api/@types'
 import styles from '~/components/styles.module.css'
 import { StickyCard } from './StickyCard'
@@ -33,28 +39,43 @@ export const Board = defineComponent({
       type: Function as PropType<(order: number[]) => void>,
       required: true,
     },
+    updatezIndex: {
+      type: Function as PropType<
+        (cardId: Card['cardId'], zIndex: Card['zIndex']) => void
+      >,
+      required: true,
+    },
   },
   setup(props) {
     const onClick = () => props.add()
-    const localCards = ref(props.cards)
-    const order = ref([0, 1, 2])
-    const addTargetCardTail = (cardId: number) => {
-      localCards.value = {
-        ...localCards.value.filter((c) => c.cardId === cardId),
-      }
-      order.value = [...localCards.value.map((c) => c.cardId)]
-      props.updateOrder(order.value)
+    const maxzIndex = computed(
+      () => Math.max(...props.cards.map((c) => c.zIndex)) + 1
+    )
+    const cardIds = ref(props.cards.map((c) => c.cardId))
+    watch(
+      () => props.cards,
+      () => props.cards.map((c) => c.cardId)
+    )
+    const addCardIdToTail = (id: number) => {
+      cardIds.value = [...cardIds.value.filter((c) => c != id), id]
     }
+    const getCardById = (cardId: number) =>
+      props.cards.filter((c) => c.cardId === cardId)[0]
     return () => (
       <div class={styles.boardContainer}>
-        {props.cards.map((card) => (
-          <StickyCard
-            card={card}
-            input={(text) => props.input(card.cardId, text)}
-            delete={() => props.delete(card.cardId)}
-            position={(position) => props.position(card.cardId, position)}
-            updateOrder={(cardId) => addTargetCardTail(cardId)}
-          />
+        {cardIds.value.map((cardId) => (
+          <div onMousedown={() => addCardIdToTail(cardId)}>
+            <StickyCard
+              card={getCardById(cardId)}
+              input={(text) => props.input(cardId, text)}
+              delete={() => props.delete(cardId)}
+              position={(position) => props.position(cardId, position)}
+              clickCardId={(pcardId) =>
+                props.updatezIndex(pcardId, maxzIndex.value)
+              }
+              getzIndex={() => maxzIndex.value}
+            />
+          </div>
         ))}
         <button class={styles.addCardButton} onClick={onClick}>
           +
