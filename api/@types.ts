@@ -6,7 +6,6 @@ export type Card = {
     x: number
     y: number
   }
-  zIndex: number
 }
 
 export type Room = {

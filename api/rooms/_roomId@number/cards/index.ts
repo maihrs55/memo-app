@@ -24,15 +24,12 @@ export default mockMethods<Methods>({
         x: 0,
         y: 0,
       },
-      zIndex: 0,
     }
     const room = rooms.find((r) => r.roomId === roomId)
     if (!room || !card)
       return {
         status: 400,
       }
-    const zIndexs = room.cards.map((c) => c.zIndex)
-    card.zIndex = Math.max(...zIndexs)
     room?.cards.push(card)
     return { status: 200, resBody: card }
   },

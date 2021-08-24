@@ -2,7 +2,7 @@ import { defineComponent, PropType, useContext } from '@nuxtjs/composition-api'
 import type { Room } from '~/api/@types'
 import styles from '~/components/styles.module.css'
 
-export const Sideber = defineComponent({
+export const Sidebar = defineComponent({
   props: {
     rooms: {
       type: Array as PropType<Room[]>,
