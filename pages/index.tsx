@@ -8,7 +8,7 @@ import {
 } from '@nuxtjs/composition-api'
 import type { Card, Room } from '~/api/@types'
 import { Board } from '~/components/Board'
-import { Sideber } from '~/components/Sideber'
+import { Sidebar } from '~/components/Sidebar'
 import styles from './styles.module.css'
 
 export type OptionalQuery = {
@@ -89,8 +89,8 @@ export default defineComponent({
     return () =>
       rooms.value ? (
         <div class={styles.container}>
-          <div class={styles.sideberwrapper}>
-            {rooms.value && <Sideber rooms={rooms.value} />}
+          <div class={styles.sidebarwrapper}>
+            {rooms.value && <Sidebar rooms={rooms.value} />}
           </div>
           <div class={styles.boardwrapper}>
             {roomId.value !== undefined && (

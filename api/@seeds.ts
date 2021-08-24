@@ -1,58 +1,53 @@
-import type { Room } from './@types'
+import type { Room } from '~/api/@types'
 
 export const rooms: Room[] = [
   {
     roomId: 0,
-    roomName: 'room1',
-    color: '#768EB7',
+    roomName: 'roomA',
+    color: '#f16e47',
     cards: [
       {
         cardId: 0,
-        text: 'カード1',
-        color: '#65A6E8',
+        text: 'roomAカードA',
+        color: '#d69f28',
         position: { x: 200, y: 100 },
-        zIndex: 1,
       },
       {
         cardId: 1,
-        text: 'カード2',
-        color: '#4182CE',
+        text: 'roomAカードB',
+        color: '#a2c94c',
         position: { x: 300, y: 120 },
-        zIndex: 2,
       },
       {
         cardId: 2,
-        text: 'カード3',
-        color: '#2565B7',
+        text: 'roomAカードC',
+        color: '#b145af',
         position: { x: 400, y: 240 },
-        zIndex: 3,
       },
     ],
     order: [0, 1, 2],
   },
   {
     roomId: 1,
-    roomName: 'room2',
-    color: '#B59599',
+    roomName: 'roomB',
+    color: '#e9447b',
     cards: [
       {
         cardId: 0,
-        text: 'カード1',
-        color: '#4182CE',
+        text: 'roomBカードA',
+        color: '#a2c94c',
         position: { x: 400, y: 130 },
-        zIndex: 1,
       },
     ],
     order: [0],
   },
-  { roomId: 2, roomName: 'room3', color: '#0F5076', cards: [], order: [] },
+  { roomId: 2, roomName: 'roomC', color: '#b145af', cards: [], order: [] },
 ]
 
 export const colors: string[] = [
-  '#768EB7',
-  '#65A6E8',
-  '#768EB7',
-  '#4182CE',
-  '#2565B7',
-  '#B59599',
+  '#b145af',
+  '#e9447b',
+  '#f16e47',
+  '#d69f28',
+  '#a2c94c',
 ]
