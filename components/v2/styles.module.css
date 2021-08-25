@@ -4,12 +4,12 @@
   border-color: #c1cedb;
   border-width: 1px;
   border-right-style: solid;
-  background-color: #e8ecb7;
+  background-color: #fff6ff;
 }
 
 .room {
   font-size: 30px;
-  border-color: #c1cedb;
+  border-color: #c5d5e6;
   border-width: 1px;
   border-bottom-style: solid;
   text-align: center;
@@ -18,7 +18,7 @@
 .boardContainer {
   position: relative;
   height: 100%;
-  background-color: #34a4a8;
+  background-color: #c9c1ce;
 }
 
 .addCardButton {
@@ -40,7 +40,7 @@
   top: 1%;
   border-radius: 50%;
   height: 22px;
-  font-size: 8px;
+  font-size: 16px;
   border: solid 1px #eee8;
   background-color: transparent;
   cursor: pointer;

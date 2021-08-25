@@ -6,9 +6,9 @@ import {
   useContext,
   useRoute,
 } from '@nuxtjs/composition-api'
-import type { Card,Room } from '~/api/@types'
-import {Board} from '~/components/v2/Board'
-import { Sidebar } from '~/components/Sidebar'
+import type { Card, Room } from '~/api/@types'
+import { Board } from '~/components/v2/Board'
+import { Sidebar } from '~/components/v2/Sidebar'
 import styles from '~/pages/v2/styles.module.css'
 
 export type OptionalQuery = {
@@ -28,6 +28,16 @@ export default defineComponent({
     onMounted(async () => {
       rooms.value = await ctx.$api.rooms.$get()
     })
+    const deleteCard = async (cardId: Card['cardId']) => {
+      const validateRoomId = roomId.value
+      if (validateRoomId === undefined) return
+      await ctx.$api.rooms
+        ._roomId(validateRoomId)
+        .cards._cardId(cardId)
+        .$delete()
+
+      rooms.value = await ctx.$api.rooms.$get()
+    }
 
     return () =>
       rooms.value ? (
@@ -35,7 +45,14 @@ export default defineComponent({
           <div class={styles.sidebarwrapper}>
             {rooms.value && <Sidebar rooms={rooms.value} />}
           </div>
-          <div class={styles.boardwrapper}></div>
+          <div class={styles.boardwrapper}>
+            {roomId.value !== undefined && (
+              <Board
+                cards={rooms.value[roomId.value].cards}
+                delete={deleteCard}
+              />
+            )}
+          </div>
         </div>
       ) : (
         <div> Loading... </div>

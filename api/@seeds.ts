@@ -9,19 +9,19 @@ export const rooms: Room[] = [
       {
         cardId: 0,
         text: 'roomAカードA',
-        color: '#d69f28',
+        color: '#FFC39E',
         position: { x: 200, y: 100 },
       },
       {
         cardId: 1,
         text: 'roomAカードB',
-        color: '#a2c94c',
+        color: '#FFB7C5',
         position: { x: 300, y: 120 },
       },
       {
         cardId: 2,
         text: 'roomAカードC',
-        color: '#b145af',
+        color: '#FFB6E0',
         position: { x: 400, y: 240 },
       },
     ],
@@ -35,7 +35,7 @@ export const rooms: Room[] = [
       {
         cardId: 0,
         text: 'roomBカードA',
-        color: '#a2c94c',
+        color: '#D4B9E8',
         position: { x: 400, y: 130 },
       },
     ],
@@ -45,9 +45,9 @@ export const rooms: Room[] = [
 ]
 
 export const colors: string[] = [
-  '#b145af',
-  '#e9447b',
-  '#f16e47',
-  '#d69f28',
-  '#a2c94c',
+  '#D4B9E8',
+  '#FFB6E0',
+  '#FFB7C5',
+  '#FFDB7C',
+  '#F9F871',
 ]

@@ -1,5 +1,11 @@
-import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+} from '@nuxtjs/composition-api'
 import type { Card } from '~/api/@types'
+import { DragHandler } from '~/components/v2/DragHandler'
 import styles from '~/components/v2/styles.module.css'
 
 export const StickyCard = defineComponent({
@@ -8,18 +14,33 @@ export const StickyCard = defineComponent({
       type: Object as PropType<Card>,
       required: true,
     },
+    delete: {
+      type: Function as PropType<(cardId: Card['cardId']) => void>,
+      required: true,
+    },
   },
   setup(props) {
+    const localPosition = ref(props.card.position)
+    const containerPosition = computed(() =>
+      localPosition.value === props.card.position
+        ? props.card.position
+        : localPosition.value
+    )
+    const cardContainerStyle = ref({
+      top: `${containerPosition.value.y}px`,
+      left: `${containerPosition.value.x}px`,
+      backgroundColor: props.card.color,
+    })
+    const onClick = (cardId: number) => props.delete(cardId)
+
     return () => (
-      <div
-        class={styles.cardContainer}
-        style={{
-          top: '100px',
-          left: '100px',
-          backgroundColor: props.card.color,
-        }}
-      >
-        <button class={styles.deleteButtom} type="button">
+      <div class={styles.cardContainer} style={cardContainerStyle.value}>
+        <DragHandler card={props.card} />
+        <button
+          class={styles.deleteButtom}
+          type="button"
+          onClick={() => onClick(props.card.cardId)}
+        >
           ×
         </button>
         <textarea class={styles.textArea}></textarea>
