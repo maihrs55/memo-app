@@ -21,25 +21,23 @@ export const StickyCard = defineComponent({
   },
   setup(props) {
     const localPosition = ref(props.card.position)
-    const containerPosition = computed(() =>
-      localPosition.value === props.card.position
-        ? props.card.position
-        : localPosition.value
-    )
+    const containerPosition = computed(() => props.card.position)
     const cardContainerStyle = ref({
       top: `${containerPosition.value.y}px`,
       left: `${containerPosition.value.x}px`,
       backgroundColor: props.card.color,
     })
-    const onClick = (cardId: number) => props.delete(cardId)
+    const onClick = (cardId: number) => {
+      props.delete(cardId)
+    }
 
     return () => (
-      <div class={styles.cardContainer} style={cardContainerStyle.value}>
+      <div class={styles.cardContainer}>
         <DragHandler card={props.card} />
         <button
           class={styles.deleteButtom}
           type="button"
-          onClick={() => onClick(props.card.cardId)}
+          onMousedown={() => onClick(props.card.cardId)}
         >
           ×
         </button>

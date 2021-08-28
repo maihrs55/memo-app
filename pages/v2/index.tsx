@@ -38,6 +38,26 @@ export default defineComponent({
 
       rooms.value = await ctx.$api.rooms.$get()
     }
+    const updateOrder = async (order: number[]) => {
+      const validateRoomId = roomId.value
+      if (validateRoomId === undefined) return
+
+      await ctx.$api.rooms
+        ._roomId(validateRoomId)
+        .order.$patch({ body: { order } })
+
+      rooms.value = await ctx.$api.rooms.$get()
+    }
+    const deleteOrder = async (order: number[]) => {
+      const validateRoomId = roomId.value
+      if (validateRoomId === undefined) return
+
+      await ctx.$api.rooms
+        ._roomId(validateRoomId)
+        .order.$patch({ body: { order } })
+
+      rooms.value = await ctx.$api.rooms.$get()
+    }
 
     return () =>
       rooms.value ? (
@@ -50,6 +70,8 @@ export default defineComponent({
               <Board
                 cards={rooms.value[roomId.value].cards}
                 delete={deleteCard}
+                updateOrder={updateOrder}
+                deleteOrder={deleteOrder}
               />
             )}
           </div>

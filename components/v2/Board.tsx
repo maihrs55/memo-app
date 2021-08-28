@@ -13,24 +13,49 @@ export const Board = defineComponent({
       type: Function as PropType<(cardId: Card['cardId']) => void>,
       required: true,
     },
+    updateOrder: {
+      type: Function as PropType<(cardIds: number[]) => void>,
+      required: true,
+    },
+    deleteOrder: {
+      type: Function as PropType<(cardIds: number[]) => void>,
+      required: true,
+    },
   },
   setup(props) {
-    const cardIds = ref(props.cards.map((c) => c.cardId))
+    const updatecardIds = ref(props.cards.map((c) => c.cardId))
+    const deleteCardIds = ref(props.cards.map((c) => c.cardId))
     const getCardById = (cardId: number) =>
       props.cards.filter((c) => c.cardId === cardId)[0]
     watch(
       () => props.cards,
-      () => (cardIds.value = props.cards.map((c) => c.cardId))
+      () => (updatecardIds.value = props.cards.map((c) => c.cardId))
     )
-    const addCardIdToTail = (cardId: number) =>
-      props.cards.filter((c) => c.cardId === cardId)[0]
+    const addCardIdToTail = (id: number) => {
+      updatecardIds.value = [...updatecardIds.value.filter((c) => c != id), id]
+      props.updateOrder(updatecardIds.value)
+    }
+    const getCardStyle = (id: number) => ({
+      top: `${getCardById(id).position.y}px`,
+      left: `${getCardById(id).position.x}px`,
+      backgroundColor: getCardById(id).color,
+    })
+    const deleteOrder = (clickCardId: number) => {
+      deleteCardIds.value = [
+        ...deleteCardIds.value.filter((c) => c !== clickCardId),
+      ]
+      props.delete(clickCardId)
+      props.deleteOrder(deleteCardIds.value)
+      updatecardIds.value = deleteCardIds.value
+    }
     return () => (
       <div class={styles.boardContainer}>
-        {cardIds.value.map((cardId) => (
+        {updatecardIds.value.map((cardId) => (
           <div onMousedown={() => addCardIdToTail(cardId)}>
             <StickyCard
+              style={getCardStyle(cardId)}
               card={getCardById(cardId)}
-              delete={(cardId) => props.delete(cardId)}
+              delete={(clickCardId) => deleteOrder(clickCardId)}
             />
           </div>
         ))}
