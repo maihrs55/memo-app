@@ -79,9 +79,7 @@ export default defineComponent({
       const validateRoomId = roomId.value
       if (validateRoomId === undefined) return
 
-      await ctx.$api.rooms
-        ._roomId(validateRoomId)
-        .order.$patch({ body: { order } })
+      await ctx.$api.rooms._roomId(validateRoomId).order.$patch({ body: order })
 
       rooms.value = await ctx.$api.rooms.$get()
     }

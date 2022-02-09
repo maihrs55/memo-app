@@ -5,6 +5,7 @@ import {
   ref,
   useContext,
   useRoute,
+  watch,
 } from '@nuxtjs/composition-api'
 import type { Card, Room } from '~/api/@types'
 import { Board } from '~/components/v2/Board'
@@ -28,6 +29,9 @@ export default defineComponent({
     onMounted(async () => {
       rooms.value = await ctx.$api.rooms.$get()
     })
+    watch(roomId, async () => {
+      rooms.value = await ctx.$api.rooms.$get()
+    })
     const deleteCard = async (cardId: Card['cardId']) => {
       const validateRoomId = roomId.value
       if (validateRoomId === undefined) return
@@ -38,25 +42,44 @@ export default defineComponent({
 
       rooms.value = await ctx.$api.rooms.$get()
     }
-    const updateOrder = async (order: number[]) => {
+    const updateOrder = async (cardIds: Card['cardId'][]) => {
       const validateRoomId = roomId.value
       if (validateRoomId === undefined) return
 
       await ctx.$api.rooms
         ._roomId(validateRoomId)
-        .order.$patch({ body: { order } })
+        .order.$patch({ body: cardIds })
+      rooms.value = await ctx.$api.rooms.$get()
+    }
+    const updateCardText = async (cardId: Card['cardId'], text: string) => {
+      const validateRoomId = roomId.value
+      if (validateRoomId === undefined) return
+
+      await ctx.$api.rooms
+        ._roomId(validateRoomId)
+        .cards._cardId(cardId)
+        .$patch({ body: { text } })
+    }
+
+    const addCard = async () => {
+      const validateRoomId = roomId.value
+      if (validateRoomId === undefined) return
+      await ctx.$api.rooms._roomId(validateRoomId).cards.$post()
 
       rooms.value = await ctx.$api.rooms.$get()
     }
-    const deleteOrder = async (order: number[]) => {
+
+    const updatePosition = async (
+      cardId: Card['cardId'],
+      position: { x: number; y: number }
+    ) => {
       const validateRoomId = roomId.value
       if (validateRoomId === undefined) return
 
       await ctx.$api.rooms
         ._roomId(validateRoomId)
-        .order.$patch({ body: { order } })
-
-      rooms.value = await ctx.$api.rooms.$get()
+        .cards._cardId(cardId)
+        .$patch({ body: { position } })
     }
 
     return () =>
@@ -71,7 +94,9 @@ export default defineComponent({
                 cards={rooms.value[roomId.value].cards}
                 delete={deleteCard}
                 updateOrder={updateOrder}
-                deleteOrder={deleteOrder}
+                addCard={addCard}
+                inputText={updateCardText}
+                position={updatePosition}
               />
             )}
           </div>

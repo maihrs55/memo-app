@@ -25,7 +25,6 @@ export const rooms: Room[] = [
         position: { x: 400, y: 240 },
       },
     ],
-    order: [0, 1, 2],
   },
   {
     roomId: 1,
@@ -39,9 +38,8 @@ export const rooms: Room[] = [
         position: { x: 400, y: 130 },
       },
     ],
-    order: [0],
   },
-  { roomId: 2, roomName: 'roomC', color: '#b145af', cards: [], order: [] },
+  { roomId: 2, roomName: 'roomC', color: '#b145af', cards: [] },
 ]
 
 export const colors: string[] = [
